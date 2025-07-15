@@ -28,8 +28,13 @@ if st.session_state.show_intro:
    
 
 # ---- Load spaCy model ----
-nlp = spacy.load("en_core_web_sm")
-
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    import subprocess, sys
+    subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
+    
 # ---- Session State Initialization ----
 if "summary" not in st.session_state:
     st.session_state.summary = []
