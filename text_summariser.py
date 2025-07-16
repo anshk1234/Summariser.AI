@@ -32,6 +32,8 @@ if st.session_state.show_intro:
 def load_model():
     return spacy.load("en_core_web_sm")
 
+nlp = load_model()
+
 
     
 # ---- Session State Initialization ----
