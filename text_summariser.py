@@ -1,4 +1,3 @@
-import spacy
 import streamlit as st
 import streamlit.components.v1 as components
 import time
@@ -26,42 +25,9 @@ if st.session_state.show_intro:
     splash.empty()
     st.session_state.show_intro = False
    
-
-# ---- Load spaCy model ----
-@st.cache_resource
-def load_model():
-    return spacy.load("en_core_web_sm")
-
-nlp = load_model()
-
-
-    
-# ---- Session State Initialization ----
-if "summary" not in st.session_state:
-    st.session_state.summary = []
-if "manual_text" not in st.session_state:
-    st.session_state.manual_text = ""
- 
-
-# ---- Sidebar ----
-with st.sidebar:
-    st.title("🧭 Navigation")
-    st.markdown("### 📌 About this app")
-    st.info("""
-This app uses spaCy (NATURAL LANGUAGE PROCESSING.)for smart sentence segmentation to generate quick summaries.
-
-✨ Features:
-- Generate summaries from text            
-- Upload `.txt` files or paste text directly
-- Adjust summary length with a slider
-- Download summaries
-- Responsive design with a glowing background animation
-""")
-    st.caption("Built with ❤️ by Ansh ")
-
 # ---- Header Above Background ----
 st.markdown("<h1 style='text-align:center;'>📝 Summariser.AI</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;'>Generate summaries of text, paragraphs, news ,etc...</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>Under Development....COMING SOON .....</p>", unsafe_allow_html=True)
 
 # ---- Background Animation ----
 particles_js = """<!DOCTYPE html>
@@ -210,56 +176,5 @@ particles_js = """<!DOCTYPE html>
 """
 components.html(particles_js, height=370, scrolling=False)
 
-# ---- Summarization Functions ----
-def extract_text(file_obj):
-    if file_obj:
-        if file_obj.type == "text/plain":
-            return file_obj.read().decode("utf-8")
-    return ""
-
-def summarize_with_spacy(text, num_sentences):
-    doc = nlp(text)
-    sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
-    sorted_sentences = sorted(sentences, key=lambda s: len(s), reverse=True)
-    return sorted_sentences[:num_sentences]
-
-# ---- Input Panel ----
-st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
-st.markdown("### ✍️ Paste your text or upload a file for summarization:")
-
-uploaded_file = st.file_uploader("📂 Upload a text file", type=["txt"])
-text = st.text_area("Or enter your content manually:", key="manual_text", height=100)
-
-# ---- Summary Settings ----
-summary_length = st.slider("🧠 Select number of summary sentences", 1, 10, 3)
-
-col1, col2 = st.columns([1, 1])
-with col1:
-    if st.button("🚀 Summarize"):
-        full_text = extract_text(uploaded_file) or st.session_state.manual_text.strip()
-        if full_text:
-            st.session_state.summary = summarize_with_spacy(full_text, summary_length)
-        else:
-            st.warning("⚠️ Please upload a file or enter some text first.")
-with col2:
-    if st.button("🧹 Clear Summary"):
-        st.session_state.summary = []
-
-# ---- Output Panel ----
-if st.session_state.summary:
-    st.markdown("### 📄 Summary:")
-    for sentence in st.session_state.summary:
-        st.markdown(f"- {sentence}")
-
-    # 🔻 Prepare summary text for download
-    summary_text = "\n".join(st.session_state.summary)
-
-    # 📝 Add download button
-    st.download_button(
-        label="📥 Download Summary",
-        data=summary_text,
-        file_name="summary.txt",
-        mime="text/plain"
-    )
 
 st.markdown("</div>", unsafe_allow_html=True)
