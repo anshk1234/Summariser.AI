@@ -31,13 +31,8 @@ if st.session_state.show_intro:
 # ---- Load spaCy model ----
 @st.cache_resource
 def load_model():
-    try:
-        return spacy.load("en_core_web_sm")
-    except OSError:
-        download("en_core_web_sm")
-        return spacy.load("en_core_web_sm")
+    return spacy.load("en_core_web_sm")
 
-nlp = load_model()
 
     
 # ---- Session State Initialization ----
