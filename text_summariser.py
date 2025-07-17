@@ -63,10 +63,10 @@ particles_js = """<!DOCTYPE html>
     particlesJS("particles-js", {
       "particles": {
         "number": {
-          "value": 300,
+          "value": 350,
           "density": {
             "enable": true,
-            "value_area": 800
+            "value_area": 700
           }
         },
         "color": {
